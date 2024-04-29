@@ -1,45 +1,47 @@
 package main
 
 import (
-	"os"
-	"reloaded"
-	"strings"
+    // "fmt"
+    "os"
+    "reloaded"
+    "strings"
 )
 
 func main() {
-	args := os.Args[1:] // Get command-line arguments excluding the program name
+    Args := os.Args[1:] // Get command-line arguments excluding the program name
 
-	// Read the content of the file specified in the first command-line argument
-	text, err := os.ReadFile(args[0])
-	if err != nil {
-		panic(err)
-	}
+    // Open the file specified in the first command-line argument
+    file, err := os.Open(Args[0])
+    if err != nil {
+        panic(err)
+    }
+    defer file.Close() // Ensure the file is closed after processing
 
-	// Split the content of the file into a slice of words
-	strSlice := strings.Split(string(text), " ")
+    // Read the content of the file
+    data, err := os.ReadFile(Args[0])
+    if err != nil {
+        panic(err)
+    }
 
-	// Apply a series of transformations to the word slice
-	strSlice = reloaded.CaseN(strSlice)
-	strSlice = reloaded.ConvertUpLowCap(strSlice)
-	strSlice = reloaded.Punctuations(strSlice)
-	strSlice = reloaded.MultSpeChars(strSlice)
-	strSlice = reloaded.HexAndBinToDec(strSlice)
-	strSlice = reloaded.Vowel(strSlice)
-	strSlice = reloaded.Apostrophe(strSlice)
+    // Split the content of the file into a slice of words
+    strSlice := strings.Split(string(data), " ")
 
-	// Join the modified word slice back into a string
-	sentence := strings.Join(strSlice, " ") + "\n"
+    // Apply a series of transformations to the word slice
+    strSlice = reloaded.CaseN(strSlice)
+    strSlice = reloaded.ConvertUpLowCap(strSlice)
+    strSlice = reloaded.Punctuations(strSlice)
+    strSlice = reloaded.MultSpeChars(strSlice)
+    strSlice = reloaded.HexAndBinToDec(strSlice)
+    strSlice = reloaded.Vowel(strSlice)
+    strSlice = reloaded.Apostrophe(strSlice)
 
-	// Create a new file named "result.txt" and write the modified string into it
-	file, err := os.Create(args[1])
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
+    // Join the modified word slice back into a string
+    sentence := strings.Join(strSlice, " ") + "\n"
+    // fmt.Println("\n" + sentence)
 
-	// Write the modified string to the file
-	_, err = file.WriteString(sentence)
-	if err != nil {
-		panic(err)
-	}
+    // Write the modified string to the output file
+    err = os.WriteFile(Args[1], []byte(sentence), 0644)
+    if err != nil {
+        panic(err)
+    }
 }
