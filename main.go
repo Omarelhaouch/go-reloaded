@@ -4,7 +4,7 @@ import (
     // "fmt"
     "os"
     "reloaded"
-    "strings"
+    // "strings"
 )
 
 func main() {
@@ -24,7 +24,8 @@ func main() {
     }
 
     // Split the content of the file into a slice of words
-    strSlice := strings.Split(string(data), " ")
+    // strSlice := strings.Split(string(data), " ")
+    strSlice := reloaded.CustomSplit(string(data))
 
     // Apply a series of transformations to the word slice
     strSlice = reloaded.CaseN(strSlice)
@@ -36,7 +37,8 @@ func main() {
     strSlice = reloaded.Apostrophe(strSlice)
 
     // Join the modified word slice back into a string
-    sentence := strings.Join(strSlice, " ") + "\n"
+    // sentence := strings.Join(strSlice, " ") + "\n"
+    sentence := reloaded.CustomJoin(strSlice)
     // fmt.Println("\n" + sentence)
 
     // Write the modified string to the output file
